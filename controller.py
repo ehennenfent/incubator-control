@@ -54,13 +54,35 @@ def toggle_heater_state():
 def write_sensor_data(temp1, temp2, hum1, hum2, heat1, heat2):
     timestamp = time.time()
     
-    temperature_1.save_value({'value': temp1, timestamp:timestamp})
-    temperature_2.save_value({'value': temp2, timestamp:timestamp})
-    humidity_1.save_value({'value': hum1, timestamp:timestamp})
-    humidity_2.save_value({'value': hum2, timestamp:timestamp})
-    heater_1.save_value({'value': heat1, timestamp:timestamp})
-    heater_2.save_value({'value': heat2, timestamp:timestamp})
-    uptime.save_value({'value': 1, timestamp:timestamp})
+    try:
+        temperature_1.save_value({'value': temp1, 'timestamp':int(timestamp)})
+    except:
+        print("Error Uploading to ubidots: could not upload temperature_1")
+    try:
+        temperature_2.save_value({'value': temp2, 'timestamp':int(timestamp)})
+    except:
+        print("Error Uploading to ubidots: could not upload temperature_2")
+    try:
+        humidity_1.save_value({'value': hum1, 'timestamp':int(timestamp)})
+    except:
+        print("Error Uploading to ubidots: could not upload humidity_1")
+    try:
+        humidity_2.save_value({'value': hum2, 'timestamp':int(timestamp)})
+    except:
+        print("Error Uploading to ubidots: could not upload humidity_2")
+    try:
+        heater_1.save_value({'value': heat1, 'timestamp':int(timestamp)})
+    except:
+        print("Error Uploading to ubidots: could not upload heater_1")
+    try:
+        heater_2.save_value({'value': heat2, 'timestamp':int(timestamp)})
+    except:
+        print("Error Uploading to ubidots: could not upload heater_2")
+    try:
+        uptime.save_value({'value': 1, 'timestamp':int(timestamp)})
+    except:
+        print("Error Uploading to ubidots: could not upload Uptime")
+
     
 print("Beginning main event loop")
 while(True):
@@ -75,7 +97,7 @@ while(True):
         if not HEATER_IS_ON and (last_avg_temp < 29.8):
             toggle_heater_state()
         
-        hs = 1 if HEATER_IS_ON else 0
+        hs = 100 if HEATER_IS_ON else 0
         write_sensor_data(temp_1, temp_2, hum_1, hum_2, hs, hs)
         
         time.sleep(5)
