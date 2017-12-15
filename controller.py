@@ -65,7 +65,7 @@ def write_sensor_data(temp1, temp2, hum1, hum2, heat1, heat2):
             {'variable': humidity_2.id, 'value': hum2, timestamp:timestamp},
             {'variable': heater_1.id, 'value': heat1, timestamp:timestamp},
             {'variable': heater_2.id, 'value': heat2, timestamp:timestamp},
-            {'variable': uptime.id, 'value': 1, timestamp:timestamp}]
+            {'variable': uptime.id, 'value': 1, timestamp:timestamp}])
     except:
         print("Error saving data to ubidots")
         traceback.print_exc()
