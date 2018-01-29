@@ -32,6 +32,9 @@ class Sim():
         self.temp += dT
         self._tictime = current_time
 
+    def cleanup(self):
+        print("Cleaning up Simulator")
+
     def set_duty_cycle(self, new_duty_cycle):
         if new_duty_cycle > 1 or new_duty_cycle < 0:
             raise ValueError("Duty cycle must be between 0 and 1")
