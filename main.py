@@ -13,7 +13,7 @@ def simulate(starting_temp, ambient_temp, controller, renderer, t=.036):
     sim = Sim(starting_temp, ambient_temp)
     
     for i in range(NUM_TICS):
-        renderer.render(sim)
+        renderer.render(sim, controller)
         controller.before_tick(sim, tictime=t)
         sim.tick(tictime=t)
         controller.after_tick(sim, tictime=t)
@@ -34,14 +34,14 @@ def incubate(starting_temp, ambient_temp, controller, renderer):
         try:
             current_time = time.time()
             t = current_time - last_time
-            renderer.render(incubator)
+            renderer.render(incubator, controller)
             controller.before_tick(incubator, tictime=t)
             incubator.tick(tictime=t)
             controller.after_tick(incubator, tictime=t)
             last_time = current_time
         except:
             incubator.cleanup()
-            renderer.render(incubator)
+            renderer.render(incubator, controller)
             raise
         
 # incubate(AMBIENT_TEMP, AMBIENT_TEMP, controller, renderer)

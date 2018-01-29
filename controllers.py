@@ -46,6 +46,8 @@ class PIDController(Controller):
         self.accumulated_error = 0
         self.last_error = 0
         
+        self.rolling_error = []
+        
     def before_tick(self, incubator, tictime, **kwargs):
         error = self.target_temp - incubator.temp
         self.accumulated_error += error * tictime
@@ -58,3 +60,12 @@ class PIDController(Controller):
         
         new_duty_cycle = max(0, min(1, p_term + i_term + d_term))
         incubator.set_duty_cycle(new_duty_cycle)
+        
+    def after_tick(self, incubator, **kwargs):
+        error = self.target_temp - incubator.temp
+        self.rolling_error = self.rolling_error[-2048:]
+        self.rolling_error.append(abs(error))
+        
+    @property
+    def avg_error(self):
+        return sum(self.rolling_error) / float(len(self.rolling_error))

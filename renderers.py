@@ -1,5 +1,6 @@
 from ubidots import ApiClient
 from secrets import master_incubator_token
+import pprint as pp
 import traceback
 import time
 
@@ -16,10 +17,10 @@ class Renderer():
 
 class TerminalRenderer(Renderer):
     
-    def render(self, incubator):
+    def render(self, incubator, controller):
         super().render(incubator)
         if (self.count % 1666) == 0:
-            print(incubator.temp)
+            print("%s -- +- %s" % (incubator.temp, controller.avg_error))
 
 class UbidotsRenderer(Renderer):
     def __init__(self):
@@ -37,6 +38,8 @@ class UbidotsRenderer(Renderer):
         self.heater_1 = self._get_variable('heater-1')
         self.heater_2 = self._get_variable('heater-2')
         self.uptime = self._get_variable('uptime')
+        
+        self.backlogged_data = []
 
     def _get_time(self):
         return int(time.time() * 1000)
@@ -50,19 +53,23 @@ class UbidotsRenderer(Renderer):
         raise Exception("Could not find variable %s!" % label)
         
         
-    def render(self, incubator):
+    def render(self, incubator, controller):
         timestamp = self._get_time()
     
-        try:
-            self.api.save_collection([
-                {'variable': self.temperature_1.id, 'value': incubator.temp_1, timestamp:timestamp},
+        data = [{'variable': self.temperature_1.id, 'value': incubator.temp_1, timestamp:timestamp},
                 {'variable': self.temperature_2.id, 'value': incubator.temp_2, timestamp:timestamp},
                 {'variable': self.humidity_1.id, 'value': incubator.hum_1, timestamp:timestamp},
                 {'variable': self.humidity_2.id, 'value': incubator.hum_2, timestamp:timestamp},
                 {'variable': self.heater_1.id, 'value': incubator.duty_cycle, timestamp:timestamp},
                 {'variable': self.heater_2.id, 'value': incubator.duty_cycle, timestamp:timestamp},
-                {'variable': self.uptime.id, 'value': incubator.uptime, timestamp:timestamp}])
+                {'variable': self.uptime.id, 'value': incubator.uptime, timestamp:timestamp}]
+        
+        try:
+            self.api.save_collection(data)
         except:
-            print("Error saving data to ubidots")
+            for i in data:
+                self.backlogged_data.append(i)
             traceback.print_exc()
         
+        if (incubator.uptime == 0):
+            pp.pprint(self.backlogged_data)
