@@ -2,7 +2,7 @@ from Adafruit_DHT import read_retry, AM2302
 import RPi.GPIO as GPIO
 import time
 
-class Incubator():
+class Incubator(object):
     
     def __init__(self, ambient_temp):
         self.tick()

@@ -6,7 +6,7 @@ from controllers import PIDController
 import time
 
 NUM_TICS = 200000 # 120 minutes
-TARGET_TEMP = 37.0
+TARGET_TEMP = 35.0
 AMBIENT_TEMP = 22.0
 
 def simulate(starting_temp, ambient_temp, controller, renderer, t=.036):
@@ -23,7 +23,7 @@ def simulate(starting_temp, ambient_temp, controller, renderer, t=.036):
 controller = PIDController(TARGET_TEMP)
 
 renderer = TerminalRenderer()
-simulate(AMBIENT_TEMP, AMBIENT_TEMP, controller, renderer)
+# simulate(AMBIENT_TEMP, AMBIENT_TEMP, controller, renderer)
 
 
 def incubate(starting_temp, ambient_temp, controller, renderer):
@@ -44,4 +44,4 @@ def incubate(starting_temp, ambient_temp, controller, renderer):
             renderer.render(incubator, controller)
             raise
         
-# incubate(AMBIENT_TEMP, AMBIENT_TEMP, controller, renderer)
+incubate(AMBIENT_TEMP, AMBIENT_TEMP, controller, renderer)

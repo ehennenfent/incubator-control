@@ -1,5 +1,5 @@
 
-class Controller():
+class Controller(object):
     def __init__(self):
         pass
     
@@ -12,7 +12,7 @@ class Controller():
 class DumbController(Controller):
     
     def __init__(self, target_temp, tolerance=0.2):
-        super().__init__()
+        super(DumbController, self).__init__()
         self.target_temp = target_temp
         self.tolerance = tolerance
     
@@ -27,7 +27,7 @@ class DumbController(Controller):
 
 class SmartPController(Controller):
     def __init__(self, target_temp, p=0.809):
-        super().__init__()
+        super(SmartPController, self).__init__()
         self.target_temp = target_temp
         self.p = p
         
@@ -38,7 +38,7 @@ class SmartPController(Controller):
 
 class PIDController(Controller):
     def __init__(self, target_temp, p=0.809, i=0.5, d=0.1):
-        super().__init__()
+        super(PIDController, self).__init__()
         self.target_temp = target_temp
         self.p = p
         self.i = i

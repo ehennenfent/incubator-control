@@ -4,7 +4,7 @@ import pprint as pp
 import traceback
 import time
 
-class Renderer():
+class Renderer(object):
     def __init__(self):
         self.count = 0
         
@@ -18,13 +18,13 @@ class Renderer():
 class TerminalRenderer(Renderer):
     
     def render(self, incubator, controller):
-        super().render(incubator)
+        super(TerminalRenderer, self).render(incubator)
         if (self.count % 1666) == 0:
             print("%s -- +- %s" % (incubator.temp, controller.avg_error))
 
 class UbidotsRenderer(Renderer):
     def __init__(self):
-        super().__init__()
+        super(UbidotsRenderer, self).__init__()
         
         self.api = ApiClient(token=master_incubator_token)
         
