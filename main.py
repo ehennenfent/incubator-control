@@ -1,5 +1,5 @@
 from simulator import Sim
-# from incubator import Incubator
+from incubator import Incubator
 from renderers import TerminalRenderer
 from controllers import PIDController
 

@@ -5,7 +5,6 @@ import time
 class Incubator(object):
     
     def __init__(self, ambient_temp):
-        self.tick()
         self.ambient_temp = ambient_temp
         self.duty_cycle = 0
         self._tictime = time.time()
@@ -22,6 +21,7 @@ class Incubator(object):
         self.p_13.start(0)
 
         self.rolling_temp = []
+        self.tick()
 
     def tick(self, tictime=0):
         self.hum_1, self.temp_1 = read_retry(AM2302, 14)
@@ -34,7 +34,7 @@ class Incubator(object):
 
     @property
     def temp(self):
-        smoothed = list(filter(lambda k: (k >= 5) and (k =< 70), self.rolling_temp))
+        smoothed = list(filter(lambda k: (k >= 5) and (k <= 70), self.rolling_temp))
         return sum(smoothed) / float(len(smoothed))
 
     def cleanup(self):
