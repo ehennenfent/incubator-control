@@ -1,6 +1,6 @@
 from simulator import Sim
 from incubator import Incubator
-from renderers import TerminalRenderer
+from renderers import UbidotsRenderer
 from controllers import PIDController
 
 import time
@@ -22,7 +22,7 @@ def simulate(starting_temp, ambient_temp, controller, renderer, t=.036):
 
 controller = PIDController(TARGET_TEMP)
 
-renderer = TerminalRenderer()
+renderer = UbidotsRenderer()
 # simulate(AMBIENT_TEMP, AMBIENT_TEMP, controller, renderer)
 
 

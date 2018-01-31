@@ -68,4 +68,6 @@ class PIDController(Controller):
         
     @property
     def avg_error(self):
-        return sum(self.rolling_error) / float(len(self.rolling_error))
+        if(len(self.rolling_error) > 0):
+            return sum(self.rolling_error) / float(len(self.rolling_error))
+        return 0

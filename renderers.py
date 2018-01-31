@@ -29,7 +29,7 @@ class UbidotsRenderer(Renderer):
         self.api = ApiClient(token=master_incubator_token)
         
         self.incubator_endpoint = self.api.get_datasource('5a224554c03f9721f59934ff')
-        self.variables = incubator_endpoint.get_variables()
+        self.variables = self.incubator_endpoint.get_variables()
         
         self.temperature_1 = self._get_variable('temperature-1')
         self.temperature_2 = self._get_variable('temperature-2')
@@ -38,6 +38,7 @@ class UbidotsRenderer(Renderer):
         self.heater_1 = self._get_variable('heater-1')
         self.heater_2 = self._get_variable('heater-2')
         self.uptime = self._get_variable('uptime')
+        self.error = self._get_variable('error')
         
         self.backlogged_data = []
 
@@ -62,7 +63,8 @@ class UbidotsRenderer(Renderer):
                 {'variable': self.humidity_2.id, 'value': incubator.hum_2, timestamp:timestamp},
                 {'variable': self.heater_1.id, 'value': incubator.duty_cycle, timestamp:timestamp},
                 {'variable': self.heater_2.id, 'value': incubator.duty_cycle, timestamp:timestamp},
-                {'variable': self.uptime.id, 'value': incubator.uptime, timestamp:timestamp}]
+                {'variable': self.uptime.id, 'value': incubator.uptime, timestamp:timestamp},
+                {'variable': self.error.id, 'value': controller.avg_error, timestamp:timestamp}]
         
         try:
             self.api.save_collection(data)
